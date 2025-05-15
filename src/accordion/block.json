@@ -1,0 +1,17 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "vga/accordion",
+	"version": "0.1.2",
+	"title": "Accordion",
+	"category": "vga-category",
+	"icon": "menu-alt3",
+	"description": "Un bloc permettant de rangé du contenu et de l'afficher en cliquant dessus",
+	"supports": {
+		"html": false
+	},
+	"textdomain": "accordion",
+	"editorScript": "file:./index.js",
+	"script": [ "file:./script.js", "vga-accordion-js" ],
+	"style": "file:./style-index.css"
+}

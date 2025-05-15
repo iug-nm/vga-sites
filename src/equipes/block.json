@@ -1,0 +1,32 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "vga/equipes",
+	"version": "0.1.0",
+	"title": "Équipes",
+	"category": "vga-category",
+	"icon": "admin-users",
+	"description": "Bloc permettant un affichage dynamique des conseillers et conseillères municipaux et municipales",
+	"example": {},
+	"attributes": {
+		"picture": {
+			"type": "integer"
+		},
+		"name": {
+			"type": "string"
+		},
+		"rank": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"html": false,
+		"typography": {
+			"fontSize": true
+		}
+	},
+	"textdomain": "equipes",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"render": "file:./render.php"
+}

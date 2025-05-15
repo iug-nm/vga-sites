@@ -1,0 +1,44 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "vga/touslesarticles",
+	"version": "1.1.0",
+	"title": "Tous les articles",
+	"category": "vga-category",
+	"icon": "excerpt-view",
+	"description": "Bloc affichant tous les articles ayant été postés sur le site",
+	"example": {},
+	"attributes": {
+		"orderType": {
+			"type": "string"
+		},
+		"click": {
+			"type": "boolean"
+		},
+		"displayDate": {
+			"type": "boolean"
+		},
+		"displayContent": {
+			"type": "boolean"
+		},
+		"displayTitle": {
+			"type": "boolean"
+		},
+		"displayTags": {
+			"type": "boolean"
+		},
+		"displayCategories": {
+			"type": "boolean"
+		}
+	}, 
+	"supports": {
+		"html": false,
+		"typography": {
+			"fontSize": true
+		}
+	},
+	"textdomain": "touslesarticles",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

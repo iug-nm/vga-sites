@@ -1,0 +1,32 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "vga/accordion-item",
+	"version": "0.1.2",
+	"title": "Accordion Item",
+	"category": "vga-category",
+	"parent": ["vga/accordion"],
+	"icon": "list-view",
+	"description": "Un block permettant d'inscrire du contenu dans un block accordéon",
+	"attributes": {
+		"accordionTitle": {
+			"type": "string",
+			"source": "text",
+			"selector": ".accordion-title"
+		},
+		"accordionId": {
+			"type": "string"
+		},
+		"content": {
+			"type": "string",
+			"source": "html",
+			"selector": ".accordion-panel > div",
+			"__experimentalRole": "content"
+		}
+	},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "accordion-item",
+	"editorScript": "file:./index.js"
+}

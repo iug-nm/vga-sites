@@ -1,0 +1,113 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+ // https://codepen.io/tobiasahlin/pen/JVmLRa Masonry
+
+ body[theme-mode="light"] {
+  .tla-post {
+    background-color: var(--light-white);
+  }
+  .tla-posts a {
+   color: var(--darker);
+  }
+ }
+ body[theme-mode="dark"] {
+  .tla-post {
+    background-color: var(--darker);
+  }
+  .tla-post p,
+  .tla-post date,
+  .tla-post span a {
+   color: var(--dark-white);
+  }
+  .tla-post > a {
+    color: var(--dark-primary);
+  }
+ }
+ .tla-posts {
+  display: flex;
+  flex-flow: column wrap;
+  align-content: space-between;
+ }
+ .tla-posts::before,
+ .tla-posts::after {
+  content: '';
+  flex-basis: 100%;
+  width: 0;
+  order: 2;
+ }
+.tla-post {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border-radius: 10px;
+}
+@media screen and (min-device-width: 1023px) {
+  .tla-post {
+    width: 32%;
+  }
+  .tla-post:nth-child(3n+1) {
+    order: 1
+  }
+  .tla-post:nth-child(3n+2) {
+    order: 2
+  }
+  .tla-post:nth-child(3n) {
+    order: 3
+  }
+}
+@media screen and (max-device-width: 1023px) {
+  .tla-posts::before {
+    order: 2;
+  }
+ .tla-posts::after {
+  order: 1;
+ }
+  .tla-post {
+    width: 48%;
+  }
+  .tla-post:nth-child(2n+1) {
+    order: 1
+  }
+  .tla-post:nth-child(2n) {
+    order: 2
+  }
+}
+
+@media screen and (max-device-width: 500px) {
+  .tla-posts {
+    margin-bottom: -10rem;
+  }
+}
+.tla-post h4,
+.tla-post p {
+  margin: 0;
+}
+.tla-post-tags, .tla-post-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.tla-post-tags {
+  margin-top: 0.5rem;
+}
+.tla-post-categories {
+  margin: 0.5rem 0;
+}
+.tla-post-categories span {
+  padding: 0 0.5rem;
+  border-radius: 10px;
+  background-color: rgba(103, 159, 223, 0.397);
+  word-break: break-all;
+}
+.tla-post-tags span {
+  padding: 0 0.5rem;
+  border-radius: 10px;
+  background-color: rgba(255, 230, 0, 0.397);
+  word-break: break-all;
+}
+.tla-post date {
+  font-weight: bold;
+}
