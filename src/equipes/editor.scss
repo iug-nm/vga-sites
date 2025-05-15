@@ -1,10 +1,21 @@
-  .equipes-image {
-    height: 250px;
-    width: 200px;
-    border-radius: 10px;
-    object-fit: cover;
- }
- .equipes-card {
-    padding: 1rem;
-    border: 1px solid black;
- }
+.equipes-card {
+   border: 1px solid #BBB;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 1rem;
+   max-height: 250px;
+   border-radius: 5px;
+}
+.equipes-card > h4,
+.equipes-card > p {
+   margin: 0.2rem;
+}
+.equipes-image {
+   width: 100%;
+   object-fit: cover;
+   border-radius: 5px;
+}
+.equipes-card .components-placeholder {
+   box-shadow: unset !important
+}

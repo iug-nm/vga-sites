@@ -54,13 +54,13 @@ export default function Edit({attributes, setAttributes}) {
                     <hr />
                     <TextControl
                         label={"Nom de l'élu.e"}
-                        value={name}
+                        value={(name) ? name : setAttributes({name: "Mme Dupont"})}
                         onChange={(value) => setAttributes({name: value})}
                         type="text"
                     />
                     <TextControl
                         label={"Fonction de l'élu.e"}
-                        value={rank}
+                        value={(rank) ? rank : setAttributes({rank: "Maire"})}
                         onChange={(value) => setAttributes({rank: value})}
                         type="text"
                     />
@@ -80,22 +80,21 @@ export default function Edit({attributes, setAttributes}) {
                     />
             </BlockControls>
 
-            {/* Lorsque le component Image possède une image mise en ligne, on le cache pour laisser place au component prévue à la bonne mise en forme */}
-            {!picture && (   
-            <Image 
-                id={picture}
-                size="full"
-                onSelect={handlePictureSelect}
-                labels={{
-                    title: "Séléctionnez un portrait",
-                    instructions: "Séléctionner une image pour illustrer les conseillers et conseillères municipaux et municipales"
-                }}
-            />)}
-
             <div className='equipes-card'>
                 {name && (<h4>{name}</h4>)}
                 {rank && (<p>{rank}</p>)}
                 {picture && (<AttachmentImage imageId={picture} />)}
+                {/* Lorsque le component Image possède une image mise en ligne, on le cache pour laisser place au component prévue à la bonne mise en forme */}
+                {!picture && (   
+                <Image 
+                    id={picture}
+                    size="full"
+                    onSelect={handlePictureSelect}
+                    labels={{
+                    title: "Séléctionnez un portrait",
+                    instructions: "Séléctionner une image pour illustrer les conseillers et conseillères municipaux et municipales"
+                }}
+            />)}
             </div>
        </div>
     );
