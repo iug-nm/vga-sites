@@ -509,7 +509,7 @@
     $update_lat = (isset($_POST['lat']) && Utils::is_float_from_string($_POST['lat'])) ? strip_tags($_POST['lat']) : false;
     $update_lng = (isset($_POST['lng']) && Utils::is_float_from_string($_POST['lng'])) ? strip_tags($_POST['lng']) : false;
 
-    if (is_double($update_lat) && is_double($update_lng)) {
+    if (Utils::is_float_from_string($update_lat) && Utils:: is_float_from_string($update_lng)) {
         Map::update_map($update_lat, $update_lng);
     }
 ?>

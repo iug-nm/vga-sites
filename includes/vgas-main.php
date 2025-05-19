@@ -74,7 +74,10 @@ input[type="checkbox"]:disabled + .toggler-slider {
 }
 </style>
 <?php echo "<h1>".VGA_PLUGIN_NAME."</h1>"; ?>
-<p>Activez les modules que vous voulez utiliser lors de la création de contenu au sein de votre site internet</p>
+<p>Activez les modules que vous voulez utiliser lors de la création de contenu au sein de votre site internet 
+	<br>
+	<a href="https://code.destination-valdegaronne.com/guide-wordpress.pdf" title="En cliquant vous téléchargerez le Tutoriel PDF pour utiliser wordpress ">Télécharger le Guide d'utilisation de Wordpress réalisé par l'Agglomération</a>
+</p>
 
 <?php
 // On n'execute la fonction que lorsque le formulaire est validé
