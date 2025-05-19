@@ -88,6 +88,6 @@ input[type="checkbox"]:disabled + .toggler-slider {
 	// Si le module possède l'option autoload sur on, on octtroie la possibilité à l'utilisateur de charger le module, sinon celui-ci est grisé (car pas fini)
 	// On utilise yes & no pour se différencier des autoloads classique de wordpress pour ne pas surcharger le thread
 	(($r->autoload == 'no') ? 'disabled' : null).
-	"/><div class='toggler-slider'><div class='toggler-knob'></div></div></label><span> {$r->option_name}</span></div>";
+	"/><div class='toggler-slider'><div class='toggler-knob'></div></div></label><span> ".ucfirst(substr($r->option_name, 4))."</span></div>";
  }
 echo get_submit_button("Mettre à jour les réglages", "primary large", "submit", false, ''); ?></form>

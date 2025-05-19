@@ -158,8 +158,6 @@
     L.tileLayer(tileLayer, {
         maxZoom: 91,
         attribution: '&copy; <a target="_blank" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).on('tileloadstart', (event) => {
-        event.tile.setAttribute('loading', 'lazy');
     }).addTo(map);
 
     // https://stackoverflow.com/questions/36037178/leaflet-loads-incomplete-map
