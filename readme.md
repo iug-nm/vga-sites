@@ -5,7 +5,7 @@ Elle n'embarque que le minimum syndical pour permettre à ceux-ci de créer du c
 sans être importuné par des temps de chargements désagréables.
 
 # Installer cette extension
-Pour pouvoir utiliser cette extension pensez tout d'abord à : 
+Pour pouvoir utiliser cette extension en local pensez tout d'abord à : 
   - télécharger tous les fichiers se trouvant sur ce repertoire
   - Ouvrir votre terminal est exécutez les commandes :
       - `npm install` pour installer les dependances
@@ -13,6 +13,8 @@ Pour pouvoir utiliser cette extension pensez tout d'abord à :
       - `npm run plugin-zip` pour rendre l'extension dans sa version finale
       
 > Attention pensez à bien inclure `vga-sites.php` dans le zip sinon wordpress ne reconnaitra pas l'extension
+
+Si vous souhaitez en revanche l'installer sur votre wordpress zippez là et importez là !
 
 # Blocks embarqués par l'extension
 En vous procurant cette extension vous aurez par la suite le choix d'activer ou non plusieurs modules indépendants.
