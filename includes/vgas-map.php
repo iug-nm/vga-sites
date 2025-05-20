@@ -114,13 +114,23 @@
     // On convertis l'objet en array pour pouvoir le loop 
     const unsafe_site = "Impossible de réaliser cette action car vous ne naviguez actuellement pas sur un site de confiance";
     const unsafe_title = "🚫 Attention 🚫";
+
+    // https://codepen.io/ng-ngc-sn-the-bashful/pen/Exgmxqp
     const toast = (title, content, color) => {
-        let toast = "<li class='toast-element "+color+"'><h3>"+title+"</h3><p>"+content+"</p></li>";
-        $('#toast-list').append(toast);
-        $('#toast-list > .toast-element:first-child').delay(4000).fadeOut(400, () => {
-            $('#toast-list > .toast-element').remove();
-        });
+        const main = document.getElementById("toast-list");
+        if (main) {
+            const toast = document.createElement("li");
+            const autoHide = setTimeout(() => {
+                $(toast).fadeOut(200, () => {
+                    main.removeChild(toast);
+                });
+            }, 3500);
+            toast.classList.add("toast-element", color);
+            toast.innerHTML = `<h3>${title}</h3><p>${content}</p>`;
+            main.appendChild(toast);
+        }
     }
+
     const markers_test = Object.entries(json_obj.markers);
     const tileLayer = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 
@@ -398,8 +408,9 @@
     .yellow {background-color:#fff0b6;border: 1px solid rgb(189, 176, 125)}
     .orange {background-color:#ffcb9e;border: 1px solid rgb(204, 160, 122)}
     .red {background-color:#ffc8c8;border: 1px solid rgb(214, 161, 161)}
-    #toast-list {position:absolute;top:0;right:1rem;}
-    .toast-element {width:300px;border-radius:10px;padding:0.1rem 1rem;}
+    #toast-list {position:absolute;top:0;right:1rem;z-index: 999;}
+    .toast-element > * {margin:0.5rem 0}
+    .toast-element {width:300px;border-radius:5px;padding:0.1rem 0.5rem;}
     .map-search-results {position:absolute;background:#ddd;padding:0 1rem;border-radius:5px;margin-left:-10px;margin-top:13rem;height:300px;overflow-x:scroll;box-shadow:0 0 50px #bbb}
     .map-search-results > div {display:flex;align-items:center;justify-content:space-between;}
     .map-search-result {background-color:#eee !important;cursor: pointer;}
@@ -455,7 +466,7 @@
     #map-coordinates input {border:none;outline:none;background-color:#EEE;width:79px;cursor:copy;}
     #submit {height:fit-content;}
 
-    .markers-list {overflow-y:scroll;height:38.3vh;padding-right:15px;}
+    .markers-list {overflow-y:scroll;/*height:38.3vh*/height:352px;padding-right:15px;}
 
     
     .toggler-wrapper {display: block;width: 45px;height: 25px;cursor: pointer;position: relative;margin-bottom: 7px;}

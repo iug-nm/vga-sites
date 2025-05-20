@@ -38,19 +38,21 @@ add_action('init', function () {
                     // On lie le script js permettant de controler l'ouverture de l'accordeon
                     wp_register_script('vga-accordion-js', plugin_dir_url(__FILE__).'build/accordion/script.js', null, '0.1.0', true);
                     break;
-                case "touslesarticles":
-                        // do_shortcode("[touslesarticles tag='category' slug='non-classe']");
-                        add_shortcode("touslesarticles", function ($atts) {
-                            $atts = shortcode_atts(array(
-                                'tag' => 'category',
-                                'slug' => 'non-classe'
-                            ), $atts, 'touslesarticles');
-                        
-                            foreach(Post::get_posts_by_tag_slug(filter_var($atts['tag']), filter_var($atts['slug'])) as $post) {
-                                echo "<div>".$post->post_title."</div>";
-                            }
-                        });
-                    break;
+                // case "touslesarticles":
+                //     // ? un shortcode mais pour quoi faire ?
+
+                //     // do_shortcode("[touslesarticles tag='category' slug='non-classe']");
+                //     add_shortcode("touslesarticles", function ($atts) {
+                //         $atts = shortcode_atts(array(
+                //             'tag' => 'category',
+                //             'slug' => 'non-classe'
+                //         ), $atts, 'touslesarticles');
+                    
+                //         foreach(Post::get_posts_by_tag_slug(filter_var($atts['tag']), filter_var($atts['slug'])) as $post) {
+                //             echo "<div>".$post->post_title."</div>";
+                //         }
+                //     });
+                //     break;
             }
 
         } else if($r->option_value == 'false') { // && not registered
@@ -75,6 +77,6 @@ add_action('init', function () {
 
 require_once plugin_dir_path(__FILE__).'includes/vgas-functions.php';
 
-define('VGA_VERSION', '1.2.5');
+define('VGA_VERSION', '1.2.6');
 define('VGA_FILE_VERSION', randvers());
 define('VGA_PLUGIN_NAME', 'Val de Garonne développement');
