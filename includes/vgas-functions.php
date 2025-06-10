@@ -105,10 +105,23 @@ add_action('activate_plugin', function () {
 
 class Utils {
 
+    /**
+     * Fournit une méthode simple de créer un lien jusqu'à l'extension
+     * 
+     * @return string
+     */
     public static function admin_page($slug) {
         return "admin.php?page=vga-sites/includes/".$slug;
     }
 
+
+    /**
+     * Détermine si le string passé en paramètre est bien de type float ou non (en son sein)
+     * 
+     * @param string $float
+     * 
+     * @return boolean
+     */
     public static function is_float_from_string(String $float) {
         //On récupère les coordonnées sous forme de string, on les renvoie en mode float et on teste si ceux ci appartiennent bien à ce type
         //Sinon on renvoie false (là ou la fonction peut renvoyer true à 0 alors qu'il n'y a rien)
@@ -120,6 +133,14 @@ class Utils {
         }
     }
 
+    /**
+     * Remplace les apostrophe par des caractères unicode
+     * 
+     * @param string $string
+     * @param boolean $operation
+     * 
+     * @return string
+     */
     public static function clean_string(String $string, bool $operation) {
         if ($operation) {
             // On encode le texte (' -> &#39;)
@@ -130,6 +151,9 @@ class Utils {
         return stripslashes($string); // Stripslashes permet de retirer les \ ajoutés automatiquement par le textarea ?, sachant que le string est deja clean par d'autre fonctions
     }
 
+    /**
+     * Met à jour la structuration des liens et la nomenclature des nommage
+     */
     public static function update_structure() {
         global $wpdb;
 
@@ -152,6 +176,61 @@ class Utils {
             "option_name" => "category_base"
         ]);
     }
+
+    /**
+     * Parcours les informations de la variable $_SERVER pour récupérer l'ip du client avec ou sans proxy
+     * 
+     * @return string
+     */
+    public static function get_client_ip() {
+        foreach([
+            // PArcours de tous les types d'adresses que le server peut renvoyer
+            "HTTP_CLIENT",
+            "HTTP_X_FORWARDED_FOR",
+            "HTTP_X_FORWARDED",
+            "HTTP_X_CLUSTER_CLIENTIP",
+            "HTTP_FORWARDED_FOR",
+            "HTTP_FORWARDED",
+            "REMOTE_ADDR"
+        ] as $key) {
+            // On check que l'un des membres du foreach existe dans server, pour en extraire l'ip
+            if (array_key_exists($key, $_SERVER) === true) {
+                // Si scinde tous les strings qu'on récupère pour les tester individuellements
+                foreach(explode(",", $_SERVER[$key]) as $ip) {
+                    $ip = trim($ip);
+                    if (filter_var(
+                        $ip,
+                        FILTER_VALIDATE_IP,
+                        FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+                    !== false)) {
+                        return $ip;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Renvoie un string sous format d'heure, la fonction accorde automatiquement le pluriel des valeurs et l'affichage des valeurs qui correspondent à 0
+     * 
+     * @param integer $seconds
+     * @return string
+     */
+    public static function seconds_to_time($seconds) {
+        $d = [
+            "hours" => floor($seconds / 3600),
+            "minutes" => floor(($seconds % 3600) / 60)
+        ];
+
+        if ($d["hours"] <= 0) {
+            $res = (($d["minutes"] == 1) ? $d["minutes"]." minute" : $d["minutes"]." minutes");
+        } else if ($d["minutes"] <= 0) {
+            $res = (($d["hours"] == 1) ? $d["hours"]." heure" : $d["hours"]." heures");
+        } else {
+            $res = (($d["hours"] == 1) ? $d["hours"]." heure " : $d["hours"]." heures ")." et ".(($d["minutes"] == 1) ? $d["minutes"]." minute" : $d["minutes"]." minutes");
+        }
+        return $res;
+    }
 }
 
 class Modules {
@@ -163,6 +242,20 @@ class Modules {
             FROM `{$wpdb->prefix}options` 
             WHERE `option_name`
             LIKE 'vga-%'
+            ", OBJECT);
+
+        if (!empty($res)) {
+            return $res;
+        }
+    }
+
+    public static function get_modules_and_params() {
+        global $wpdb;
+        $res = $wpdb->get_results(
+            "SELECT *
+            FROM `{$wpdb->prefix}options` 
+            WHERE `option_name`
+            REGEXP 'vga-|sss-'
             ", OBJECT);
 
         if (!empty($res)) {
@@ -184,7 +277,8 @@ class Modules {
 
     public static function update_module() {
         global $wpdb;
-        $res = Modules::get_modules();
+        $res = Modules::get_modules_and_params();
+
         if (!empty($_POST)) {
             foreach ($res as $r) {
                 $wpdb->update($wpdb->prefix."options", array(
@@ -196,11 +290,15 @@ class Modules {
 }
 
 class Post {
+    /**
+     * Retourne une page unique
+     * 
+     * @return array
+     */
     public static function get_page($params = []) {
         global $wpdb;
         $r = null;
         //on joint les paramètres par défault avec ceux entrées depuis la fonction
-        //TODO: Vérifier que le paramètre n'existe pas déjà
         $params = array_merge($params, [
             "post_type" => "page",
             "post_status" => "publish",
@@ -219,6 +317,11 @@ class Post {
         return $res;
     }
 
+    /**
+     * Récupère toutes les catégories et les publications pour créer un plan du site
+     * 
+     * @return string
+     */
     public static function sitemap() {
         $autre = array();
         $sitemap = "<div class='sitemap' style='display:flex;flex-wrap:wrap;width:100%;'>";
@@ -274,11 +377,15 @@ class Post {
         return $sitemap;
     }
 
+    /**
+     * Retournes tous les posts (ni article ni evenements) et les affiche (echo) sous forme de liste avec les options d'affichage
+     * 
+     * @param string $orderType
+     * @param boolean $click
+     * @param array @params
+     * @param array $options
+     */
     public static function get_posts($orderType, $click, $params = [], $options = []) {
-        // get_posts permet de constuire une requête depuis le block wp
-        // Selon les parametres elle renvoie les posts triés et mis en forme d'une certaine manière avec plus ou moins d'options
-        // Elle se limite cependant aux posts et ne renvoie pas les articles, les évènements etc..
-
         global $wpdb;
         $select = null;
 
@@ -337,6 +444,12 @@ class Post {
         echo "</div>";
     }
 
+    /**
+     * Retourn toutes les etiquettes correspondant à un post
+     * 
+     * @param integer $id
+     * @param string $type
+     */
     public static function get_posts_tags(Int $id, String $type) {
         global $wpdb;
 
@@ -354,6 +467,14 @@ class Post {
         return $res;
     }
 
+    /**
+     * Retourne tous les posts correspondant à un slug spécifique
+     * 
+     * @param string $tag
+     * @param string $slug
+     * 
+     * @return array
+     */
     public static function get_posts_by_tag_slug(String $tag, String $slug) {
         // Tag : post_tag | category
         global $wpdb;
@@ -414,6 +535,9 @@ class Map {
     protected static $marmande_latitude = 44.49746979806061;
     protected static $marmande_longitude = 0.16549998285813156;
 
+    /**
+     * Création de deux tables accueillant les marqueurs et la carte de l'extension
+     */
     public static function create_map_tables() {
         global $wpdb;
 
@@ -447,6 +571,12 @@ class Map {
         } catch(Exception $e) {}
     }
 
+    /**
+     * Regarde si la table est vide ou non et renvoie un bool
+     * 
+     * @param string $table nom de la table SQL
+     * @return boolean
+     */
     public static function is_table_empty($table) {
         global $wpdb;
 
@@ -462,6 +592,9 @@ class Map {
         }
     }
 
+    /**
+     * Insertion d'un jeu de données par défaut dans la bdd
+     */
     public static function populate_map_tables() {
         global $wpdb;
         $prefix = $wpdb->prefix.Map::$plugin_prefix;
@@ -489,6 +622,12 @@ class Map {
         }
     }
     
+    /**
+     * Mise à jour des coordonnées de la carte
+     * 
+     * @param float $lat latitude
+     * @param float $lng longitude
+     */
     public static function update_map($lat, $lng) {
         //si le valeurs transmises sont nulles (par exemple quand le $_Post n'est pas lancé, l'update ne se fait pas)
         global $wpdb;
@@ -503,14 +642,12 @@ class Map {
         );
     }
 
-    /*
-    On est obligé de mettre le type de retour des deux fonctions 
-        - get_map_coordinates
-        - get_markers
-    Pour que la transformation en JSON.parse se passe mieux ensuite
-    */
-
-    //On récupère les coordonées d'une carte avec son id
+    /**
+     * Récupèration des coordonnées de la carte
+     * 
+     * @param integer $id identifiant de la carte, qui est à 5 par défaut
+     * @return array
+     */
     public static function get_map_coordinates($id = 5) {
         global $wpdb;
 
@@ -526,6 +663,11 @@ class Map {
             }
     }
 
+    /**
+     * Retourne tous les marqueurs présent dans la bdd
+     * 
+     * @return array
+     */
     public static function get_markers() {
         global $wpdb;
 
@@ -539,6 +681,12 @@ class Map {
             }
     }
 
+    /**
+     * Mise à jour du marqueur
+     * 
+     * @param integer $id identifiant du marqueur
+     * @param array $params les valeurs du marqueur que nous voulons mettre à jour
+     */
     public static function update_markers($id, Array $params) {
         global $wpdb;
         $query = [];
@@ -560,6 +708,11 @@ class Map {
         }
     }
 
+    /**
+     * Supprime le marqueur de la bdd
+     * 
+     * @param integer $id identifiant du marqueur
+     */
     public static function delete_marker($id) {
         global $wpdb;
 
@@ -572,6 +725,11 @@ class Map {
         };
     }
 
+    /**
+     * Insère un marqueur dans la bdd
+     * 
+     * @param Array $params Les informations du marqueur (titre, description, coordonnées)
+     */
     public static function add_marker(Array $params) {
         global $wpdb;
         $state = true;
@@ -584,6 +742,55 @@ class Map {
         }
         if ($state) {
             $wpdb->insert($wpdb->prefix.Map::$plugin_prefix."markers", $params);
+        }
+    }
+}
+
+class Session {
+    /**
+     * Classe gérant les sessions
+     * 
+     * Classe permettant de gérer le partage de sessions, et de limiter l'authentification d'un utilisateur à une seule sessions
+     * @link    https://gist.github.com/stephenscaff/eaebcf7a507e47abd47d552f356b546f
+     */
+    function __construct() {
+        add_action("init", [$this, "only_one"]);
+    }
+
+    /**
+     * Détermine si l'utilisateur actuel possède des sessions concurrentes
+     * 
+     * @return boolean
+     */
+    function has_current_session() {
+        return (is_user_logged_in() && count(wp_get_all_sessions()) > 1);
+    }
+
+    /**
+     * Récupère un tableau de sessions de l'utilisateur actuel
+     * 
+     * @return array
+     */
+    function get_current_session() {
+        $sessions = WP_Session_Tokens::get_instance(get_current_user_id());
+        return $sessions->get(wp_get_session_token());
+    }
+
+    /**
+     * Algo pour détruire les sessions/identifants concurrent(e)s
+     */
+    function only_one() {
+        if (!$this->had_current_session()) {
+            return;
+        }
+        $user_id = get_current_user_id();
+        $newest = max(wp_list_pluck(wp_get_all_sessions(), "login"));
+        $session = $this->get_current_session();
+
+        if ($session["login"] === $newest) {
+            wp_destroy_other_sessions();
+        } else {
+            wp_destroy_current_session();
         }
     }
 }

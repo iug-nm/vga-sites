@@ -25,7 +25,6 @@
                 "content" => $marker['content']
         ]);
     }
-    // https://stackoverflow.com/questions/7229027/how-to-get-data-to-javascript-from-php-using-json-encode
     $json = json_encode($my_json_array, JSON_FORCE_OBJECT);
 
 ?> 
@@ -109,13 +108,12 @@
         }
     });
 
+    // On transforme l'objet PHP en objet javascript pour pouvoir l'utiliser directement avec Leaflet
     var json_obj = jQuery.parseJSON('<?php echo $json;?>');
 
-    // On convertis l'objet en array pour pouvoir le loop 
     const unsafe_site = "Impossible de réaliser cette action car vous ne naviguez actuellement pas sur un site de confiance";
     const unsafe_title = "🚫 Attention 🚫";
 
-    // https://codepen.io/ng-ngc-sn-the-bashful/pen/Exgmxqp
     const toast = (title, content, color) => {
         const main = document.getElementById("toast-list");
         if (main) {
@@ -420,6 +418,14 @@
     .glossaire {display:flex;flex-wrap:wrap;gap:1rem;width:75%;}
     .glossaire > p {margin:0;}
     #map-container {display:flex;flex-direction:row;}
+    @media screen and (max-device-width: 1024px) {
+        #map-container {display:block !important;}
+        #map-container #map-bg {width:95% !important;}
+        #markers {position:relative !important;left:unset !important;width:fit-content !important;}
+        .markers-list {width:fit-content !important;}
+        .map-form {flex-direction:column !important;width:95% !important}
+        #map-coordinates {display:flex !important;justify-content:space-between !important;}
+    }
     #map-bg {height: 400px;width: 50%;margin: 1rem;margin-left: 0;box-shadow:0 0 30px #ccc;}
 
     #markers {position:absolute;left:52%;}

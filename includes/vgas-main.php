@@ -76,21 +76,46 @@ input[type="checkbox"]:disabled + .toggler-slider {
 <?php echo "<h1>".VGA_PLUGIN_NAME."</h1>"; ?>
 <p>Activez les modules que vous voulez utiliser lors de la création de contenu au sein de votre site internet 
 	<br>
-	<a href="https://code.destination-valdegaronne.com/guide-wordpress.pdf" title="En cliquant vous téléchargerez le Tutoriel PDF pour utiliser wordpress ">Télécharger le Guide d'utilisation de Wordpress réalisé par l'Agglomération</a>
+	<a href="https://code.destination-valdegaronne.com/guide-wordpress.pdf" download="Guide relatif à l'utilisation de votre site internet" title="En cliquant vous téléchargerez le Tutoriel PDF pour utiliser wordpress ">Télécharger le Guide d'utilisation de Wordpress réalisé par l'Agglomération</a>
 </p>
-
 <?php
 // On n'execute la fonction que lorsque le formulaire est validé
 (isset($_POST['submit'])) ? Modules::update_module() : null;
 
+?> <form method="post" action="">
+	<h3>Modules</h3>
+<?php
+	$desc = [
+		"equipes" => "Block permettant de présenter un.e membre du conseil municipal",
+		"carteinteractive" => "Permet d'afficher une carte ainsi que des marqueurs pour situé les points importants de votre commune",
+		"touslesarticles" => "Affiche tous les articles ayant été postés sur votre site internet",
+		"plandusite" => "Affiche toutes les catégories et les pages / articles y étant liées",
+		"accordion" => "Présentation en accodéon",
+		"version" => "Empêche la modification de code directement depuis l'interface administrateur",
+		"iframe" => "Empêche votre site d'être embarqué de manière malveillante",
+		"bruteforce" => "Bloque un utilisateur pendant 5 minutes au bout de 3 tentatives de connexion",
+		"token" => "Empêche la connexion simultané sur un même compte utilisateur sur plusieurs machines différentes",
+	];
 
-?> <form method="post" action=""> <?php
- foreach (Modules::get_modules() as $r) {
-    echo "<div class='option'><label class='toggler-wrapper'><input type='checkbox' name='{$r->option_name}'".
-	(($r->option_value == 'true') ? " checked" : null)." ".
-	// Si le module possède l'option autoload sur on, on octtroie la possibilité à l'utilisateur de charger le module, sinon celui-ci est grisé (car pas fini)
-	// On utilise yes & no pour se différencier des autoloads classique de wordpress pour ne pas surcharger le thread
-	(($r->autoload == 'no') ? 'disabled' : null).
-	"/><div class='toggler-slider'><div class='toggler-knob'></div></div></label><span> ".ucfirst(substr($r->option_name, 4))."</span></div>";
- }
-echo get_submit_button("Mettre à jour les réglages", "primary large", "submit", false, ''); ?></form>
+	// Différenciation car les modules commençant par vga sont déstinnés à être des blocs, tandis que les autres ne sont que des paramètres pour la sécurité
+	foreach (Modules::get_modules() as $r) {
+		echo "<div class='option'><label class='toggler-wrapper'><input type='checkbox' name='{$r->option_name}'".
+		(($r->option_value == 'true') ? " checked" : null)." ".
+		// Si le module possède l'option autoload sur on, on octtroie la possibilité à l'utilisateur de charger le module, sinon celui-ci est grisé (car pas fini)
+		// On utilise yes & no pour se différencier des autoloads classique de wordpress pour ne pas surcharger le thread
+		(($r->autoload == 'no') ? 'disabled' : null).
+		"/><div class='toggler-slider'><div class='toggler-knob'></div></div></label><span> ".ucfirst(substr($r->option_name, 4))." (".$desc[substr($r->option_name, 4)].")</span></div>";
+	}
+
+ ?> 
+<h3>Sécurité</h3>
+<?php
+	foreach (Modules::get_module("sss-") as $r) { //sss pour la sécurité & pour maintenir 3 caractères
+		echo "<div class='option'><label class='toggler-wrapper'><input type='checkbox' name='{$r->option_name}'".
+		(($r->option_value == 'true') ? " checked" : null)." ".
+		// Si le module possède l'option autoload sur on, on octtroie la possibilité à l'utilisateur de charger le module, sinon celui-ci est grisé (car pas fini)
+		// On utilise yes & no pour se différencier des autoloads classique de wordpress pour ne pas surcharger le thread
+		(($r->autoload == 'no') ? 'disabled' : null).
+		"/><div class='toggler-slider'><div class='toggler-knob'></div></div></label><span> ".ucfirst(substr($r->option_name, 4))." (".$desc[substr($r->option_name, 4)].")</span></div>";
+	}
+	echo get_submit_button("Mettre à jour les réglages", "primary large", "submit", false, ''); ?></form>
