@@ -25,3 +25,11 @@ Ces modules correspondent aux fonctionnalités suivantes :
 - [x] **Equipes** : Block ayant été pensé pour facilement présenter un(e) membre du conseil municipal
 - [x] **Plan du site** : Block affichant toutes les relations parents-enfants des pages et articles du site, ainsi que leurs catégories
 - [x] **Tous les articles** : Block possédant plusieurs options permettant d'afficher tous les articles ayant été publiés sur le site
+
+# Fonctionnalités de sécurité proposées par l'extension
+L'extension intègre aussi quelques options de sécurité assez utiles que vous pouvez désactiver à tout moment.
+
+- [x] **Version** : Édition de code depuis le dashboard wordpress
+- [x] **Iframe** : Mise en iframe du site
+- [x] **Bruteforce** : Blockage d'une ip utilisateur si celui-ci dépasse le nombre de tentatives max
+- [ ] **Sessions** : Empêche la connexion simultannée sur un même compte utilisateur sur différentes machine
