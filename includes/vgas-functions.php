@@ -90,7 +90,28 @@ add_action('activate_plugin', function () {
                 'option_id' => '',
                 'option_name' => 'vga-'.$m,
                 'option_value' => 'false',
-                'autoload' => 'no',
+                'autoload' => 'yes',
+            ]);
+        }
+    }
+
+    //similaire à module mais pour la sécurité
+    $sss = [
+        'version',
+        'iframe',
+        'bruteforce',
+        'token',
+        'login',
+    ];
+    
+    foreach ($sss as $s) {
+        //si le tuple n'existe pas déjà (reactivation du plugin)
+        if (!Modules::get_module($s)) {
+            $wpdb->insert($wpdb->prefix."options", [
+                'option_id' => '',
+                'option_name' => 'sss-'.$m,
+                'option_value' => 'false',
+                'autoload' => 'yes',
             ]);
         }
     }
