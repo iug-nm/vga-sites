@@ -101,7 +101,7 @@ add_action('activate_plugin', function () {
         'iframe',
         'bruteforce',
         'token',
-        'login',
+        'hide',
     ];
     
     foreach ($sss as $s) {

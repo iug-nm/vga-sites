@@ -24,6 +24,9 @@ function randvers() {
 $maximum_tries = 3;
 $lock_duration = 1800;
 
+$old_path = "wp-login.php";
+$new_path = "wp-connexion.php";
+
 function prevent_login_attempts() {
     global $maximum_tries;
     global $lock_duration;
@@ -32,7 +35,13 @@ function prevent_login_attempts() {
     $ip = get_transient("vga_attempted_login_block_ip_".Utils::get_client_ip());
 
     if ($ip && $ip["ip"] === Utils::get_client_ip()) {
-        wp_die("Trop de tentatives de connexions effectuées, vous êtes bloqués pendant {$duree}min");
+        // On vide les données du formulaire pour empêcher une re soumissions de celui-ci
+        if (!empty($_POST) && $_SERVER["REQUEST_METHOD"] == "POST") {
+            unset($_POST['pwd']);
+            unset($_POST['log']);
+        }
+
+        wp_die("Trop de tentatives de connexions effectuées, vous êtes bloqués pendant {$duree}");
     }
 }
 
@@ -41,11 +50,12 @@ function limit_login_attempts() {
     global $maximum_tries;
 
     // On récupère le nombre d'essais que nous avons enregistré sur cette ip
+    $duree = Utils::seconds_to_time($lock_duration);
     $data = get_transient('vga_attempted_login_'.Utils::get_client_ip()) ?: ["tried" => 0];
     $data["tried"]++;
 
     if ($data["tried"] >= $maximum_tries) {
-        echo "<div style='margin:1rem;' class='notice notice-error'><p>Vous avez dépassé le nombre de tentatives de connexions autorisées ({$maximum_tries}), ressayez dans {$duree} minutes</p></div>";
+        echo "<div style='margin:1rem;' class='notice notice-error'><p>Vous avez dépassé le nombre de tentatives de connexions autorisées ({$maximum_tries}), ressayez dans {$duree}</p></div>";
         // Si les tentatives réalisées sur cette ip excèdent le nombre max on créer un transient avec l'ip pour dire de ne pas accepter de tentatives de sa part
         set_transient("vga_attempted_login_block_ip_".Utils::get_client_ip(), ["ip" => Utils::get_client_ip()], $lock_duration);
     }
@@ -61,7 +71,24 @@ function prevent_multiple_sessions() {
     new Session();
 }
 
+function vga_hide_login() {
+    global $old_path;
+    global $new_path;
+
+    //récupération du contenu de wp-login.php, on search replace les valeurs et on les insères dans un nouveau fichier
+    $old_file = file_get_contents("../".$old_path);
+    $new_file = fopen("../".$new_path, "w");
+    
+    fwrite($new_file, str_replace($old_path, $new_path, $old_file));
+    fclose($new_file);
+
+    rename("../".$old_path, "../wp-old-login.php");
+}
+
 add_action('init', function () {
+
+    global $old_path;
+    global $new_path;
 
     foreach(Modules::get_modules_and_params() as $r) {
         // Suppression de vga- ou sss-
@@ -87,6 +114,12 @@ add_action('init', function () {
                 case "version":
                     define('DISALLOW_FILE_EDIT', true);
                     define('DISALLOW_FILE_MODS', true);
+                    continue 2;
+                case "hide":
+                    // if we can find wp-login.php
+                    if (file_exists("../".$old_path)) {
+                        vga_hide_login();
+                    }
                     continue 2;
                 // case "touslesarticles":
                 //     // ? un shortcode pour faire les pages par défaut mais pas de page créée
@@ -137,6 +170,14 @@ add_action('init', function () {
                     define('DISALLOW_FILE_EDIT', false);
                     define('DISALLOW_FILE_MODS', false);
                     break;
+                case "hide":
+                    if (file_exists("../".$new_path)) {
+                        // on supprime wp-connexions.php
+                        unlink("../".$new_path);
+                        // on renomme wp-login.php dans sa version initiale
+                        rename("../wp-old-login.php", "../".$old_path);
+                    }
+                    break;
             }
         }
     }
@@ -144,6 +185,6 @@ add_action('init', function () {
 
 require_once plugin_dir_path(__FILE__).'includes/vgas-functions.php';
 
-define('VGA_VERSION', '1.2.6');
+define('VGA_VERSION', '1.3.1');
 define('VGA_FILE_VERSION', randvers());
 define('VGA_PLUGIN_NAME', 'Val de Garonne développement');

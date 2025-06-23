@@ -91,10 +91,11 @@ input[type="checkbox"]:disabled + .toggler-slider {
 		"touslesarticles" => "Affiche tous les articles ayant été postés sur votre site internet",
 		"plandusite" => "Affiche toutes les catégories et les pages / articles y étant liées",
 		"accordion" => "Présentation en accodéon",
-		"version" => "Empêche la modification de code directement depuis l'interface administrateur",
+		"version" => "Empêche la modification de code directement depuis l'interface administrateur (empêche l'ajout d'extensions)",
 		"iframe" => "Empêche votre site d'être embarqué de manière malveillante",
 		"bruteforce" => "Bloque un utilisateur pendant 5 minutes au bout de 3 tentatives de connexion",
 		"token" => "Empêche la connexion simultané sur un même compte utilisateur sur plusieurs machines différentes",
+		"hide" => "Cache l'emplacement de base de l'url de connexion pour empêcher les robots d'attaquer le site internet, la nouvelle adresse sera <a target='_blank' href='".get_site_url()."/wp-connexion'>celle-ci</a>",
 	];
 
 	// Différenciation car les modules commençant par vga sont déstinnés à être des blocs, tandis que les autres ne sont que des paramètres pour la sécurité
@@ -104,7 +105,7 @@ input[type="checkbox"]:disabled + .toggler-slider {
 		// Si le module possède l'option autoload sur on, on octtroie la possibilité à l'utilisateur de charger le module, sinon celui-ci est grisé (car pas fini)
 		// On utilise yes & no pour se différencier des autoloads classique de wordpress pour ne pas surcharger le thread
 		(($r->autoload == 'no') ? 'disabled' : null).
-		"/><div class='toggler-slider'><div class='toggler-knob'></div></div></label><span> ".ucfirst(substr($r->option_name, 4))." (".$desc[substr($r->option_name, 4)].")</span></div>";
+		"/><div class='toggler-slider'><div class='toggler-knob'></div></div></label><span> ".ucfirst(substr($r->option_name, 4))." : ".$desc[substr($r->option_name, 4)]."</span></div>";
 	}
 
  ?> 
@@ -116,6 +117,6 @@ input[type="checkbox"]:disabled + .toggler-slider {
 		// Si le module possède l'option autoload sur on, on octtroie la possibilité à l'utilisateur de charger le module, sinon celui-ci est grisé (car pas fini)
 		// On utilise yes & no pour se différencier des autoloads classique de wordpress pour ne pas surcharger le thread
 		(($r->autoload == 'no') ? 'disabled' : null).
-		"/><div class='toggler-slider'><div class='toggler-knob'></div></div></label><span> ".ucfirst(substr($r->option_name, 4))." (".$desc[substr($r->option_name, 4)].")</span></div>";
+		"/><div class='toggler-slider'><div class='toggler-knob'></div></div></label><span> ".ucfirst(substr($r->option_name, 4))." : ".$desc[substr($r->option_name, 4)]."</span></div>";
 	}
 	echo get_submit_button("Mettre à jour les réglages", "primary large", "submit", false, ''); ?></form>
