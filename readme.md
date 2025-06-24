@@ -29,7 +29,8 @@ Ces modules correspondent aux fonctionnalités suivantes :
 # Fonctionnalités de sécurité proposées par l'extension
 L'extension intègre aussi quelques options de sécurité assez utiles que vous pouvez désactiver à tout moment.
 
-- [x] **Version** : Édition de code depuis le dashboard wordpress
-- [x] **Iframe** : Mise en iframe du site
+- [ ] **Version** : Édition de code depuis le dashboard wordpress
+- [x] **Iframe** : Empêche la mise en iframe du site par n'importe quels utilisateurs & serveurs
 - [x] **Bruteforce** : Blockage d'une ip utilisateur si celui-ci dépasse le nombre de tentatives max
 - [ ] **Sessions** : Empêche la connexion simultannée sur un même compte utilisateur sur différentes machine
+- [x] **Hide** : Permet de changer l'url de connexion
