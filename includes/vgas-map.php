@@ -1,5 +1,6 @@
 <?php echo "<h1>".VGA_PLUGIN_NAME."</h1>"; ?>
 <p>Configurez la carte de votre commune ici !</p>
+<p>Aucune donnée n'est enregistrée à moins que vous cliquiez sur le bouton de mise à jour correspondant (aux marqueurs ou à la carte)</p>
 <?php 
 
     // On récupère les données de la db sous plusieurs formes
