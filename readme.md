@@ -12,9 +12,9 @@ Pour pouvoir utiliser cette extension en local pensez tout d'abord à :
       - `npm run build` pour compiler les fichiers de l'extension
       - `npm run plugin-zip` pour rendre l'extension dans sa version finale
       
-> Attention pensez à bien inclure `vga-sites.php` dans le zip sinon wordpress ne reconnaitra pas l'extension
+Si vous souhaitez en revanche l'installer sur votre wordpress distant zippez là et importez là directement depuis le site internet !
 
-Si vous souhaitez en revanche l'installer sur votre wordpress zippez là et importez là !
+> Attention pensez à bien inclure `vga-sites.php` dans le zip sinon wordpress ne reconnaitra pas l'extension
 
 # Blocks embarqués par l'extension
 En vous procurant cette extension vous aurez par la suite le choix d'activer ou non plusieurs modules indépendants.
