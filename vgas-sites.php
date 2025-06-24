@@ -71,6 +71,22 @@ function prevent_multiple_sessions() {
     new Session();
 }
 
+function hide_logout_redirect () {
+    wp_redirect(home_url());
+    exit();
+}
+
+function hide_logout_url () {
+    global $new_path;
+    // create nonce permet de confirmer l'origine de la requete de deconnexion, et donc de ne pas demander de confirmation
+    return home_url("/{$new_path}?action=logout&_wpnonce=".wp_create_nonce("log-out"));
+}
+
+function hide_lostpassword () {
+    global $new_path;
+    return home_url("/{$new_path}?action=lostpassword");
+}
+
 function vga_hide_login() {
     global $old_path;
     global $new_path;
@@ -120,6 +136,10 @@ add_action('init', function () {
                     if (file_exists("../".$old_path)) {
                         vga_hide_login();
                     }
+
+                    add_filter("logout_url", "hide_logout_url");
+                    add_filter("lostpassword_url", "hide_lostpassword");
+                    add_action("wp_logout", "hide_logout_redirect");
                     continue 2;
                 // case "touslesarticles":
                 //     // ? un shortcode pour faire les pages par défaut mais pas de page créée
@@ -177,6 +197,10 @@ add_action('init', function () {
                         // on renomme wp-login.php dans sa version initiale
                         rename("../wp-old-login.php", "../".$old_path);
                     }
+
+                    remove_filter("logout_url", "hide_logout_url");
+                    remove_filter("lostpassword_url", "hide_lostpassword");
+                    remove_action("wp_logout", "hide_logout_redirect");
                     break;
             }
         }
