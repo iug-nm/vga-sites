@@ -85,6 +85,7 @@ input[type="checkbox"]:disabled + .toggler-slider {
 ?> <form method="post" action="">
 	<h3>Modules</h3>
 <?php
+	global $new_path;
 	$desc = [
 		"equipes" => "Block permettant de présenter un.e membre du conseil municipal",
 		"carteinteractive" => "Permet d'afficher une carte ainsi que des marqueurs pour situé les points importants de votre commune",
@@ -95,7 +96,7 @@ input[type="checkbox"]:disabled + .toggler-slider {
 		"iframe" => "Empêche votre site d'être embarqué de manière malveillante",
 		"bruteforce" => "Bloque un utilisateur pendant 5 minutes au bout de 3 tentatives de connexion",
 		"token" => "Empêche la connexion simultané sur un même compte utilisateur sur plusieurs machines différentes",
-		"hide" => "Cache l'emplacement de base de l'url de connexion pour empêcher les robots d'attaquer le site internet, la nouvelle adresse sera <a target='_blank' href='".get_site_url()."/wp-connexion'>celle-ci</a>",
+		"hide" => "Cache l'emplacement de base de l'url de connexion pour empêcher les robots d'attaquer le site internet, la nouvelle adresse sera <a target='_blank' href='".home_url()."/".$new_path."'>celle-ci</a>",
 	];
 
 	// Différenciation car les modules commençant par vga sont déstinnés à être des blocs, tandis que les autres ne sont que des paramètres pour la sécurité
