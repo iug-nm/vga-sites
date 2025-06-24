@@ -1,4 +1,4 @@
-# Extension Wordpress VGA Sites
+# Extension VGA Sites
 
 Cette extension est développée pour être optimisée selon les besoins des usagers des sites internets développés en parallèle.
 Elle n'embarque que le minimum syndical pour permettre à ceux-ci de créer du contenu en toute sérénité 
@@ -12,9 +12,9 @@ Pour pouvoir utiliser cette extension en local pensez tout d'abord à :
       - `npm run build` pour compiler les fichiers de l'extension
       - `npm run plugin-zip` pour rendre l'extension dans sa version finale
       
-Si vous souhaitez en revanche l'installer sur votre wordpress distant zippez là et importez là directement depuis le site internet !
+Si vous souhaitez en revanche l'installer sur votre site distant zippez là et importez là directement depuis le site internet !
 
-> Attention pensez à bien inclure `vga-sites.php` dans le zip sinon wordpress ne reconnaitra pas l'extension
+> Attention pensez à bien inclure `vga-sites.php` dans le zip sinon le site ne reconnaitra pas l'extension
 
 # Blocks embarqués par l'extension
 En vous procurant cette extension vous aurez par la suite le choix d'activer ou non plusieurs modules indépendants.
@@ -29,8 +29,8 @@ Ces modules correspondent aux fonctionnalités suivantes :
 # Fonctionnalités de sécurité proposées par l'extension
 L'extension intègre aussi quelques options de sécurité assez utiles que vous pouvez désactiver à tout moment.
 
-- [ ] **Version** : Édition de code depuis le dashboard wordpress
-- [x] **Iframe** : Empêche la mise en iframe du site par n'importe quels utilisateurs & serveurs
+- [ ] **Version** : Édition de code depuis le dashboard
+- [x] **Iframe** : Mise en iframe du site par n'importe quels utilisateurs & serveurs
 - [x] **Bruteforce** : Blockage d'une ip utilisateur si celui-ci dépasse le nombre de tentatives max
-- [ ] **Sessions** : Empêche la connexion simultannée sur un même compte utilisateur sur différentes machine
-- [x] **Hide** : Permet de changer l'url de connexion
+- [ ] **Sessions** : Prévient la connexion simultannée sur un même compte utilisateur sur différentes machine
+- [x] **Hide** : Change l'url de connexion, de déconnexion et de mise à jour du mot de passe, redirige sur la page d'accueil après déconnexion
