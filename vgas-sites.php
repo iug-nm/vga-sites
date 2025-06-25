@@ -36,10 +36,8 @@ function prevent_login_attempts() {
 
     if ($ip && $ip["ip"] === Utils::get_client_ip()) {
         // On vide les données du formulaire pour empêcher une re soumissions de celui-ci
-        if (!empty($_POST) && $_SERVER["REQUEST_METHOD"] == "POST") {
             unset($_POST['pwd']);
             unset($_POST['log']);
-        }
 
         wp_die("Trop de tentatives de connexions effectuées, vous êtes bloqués pendant {$duree}");
     }
@@ -68,7 +66,19 @@ function prevent_iframe_trap() {
 }
 
 function prevent_multiple_sessions() {
-    new Session();
+    $manager = WP_Session_Tokens::get_instance(get_current_user_id());
+    $manager->destroy_all();
+}
+
+function disable_file_execution () {
+    //création d'un fichier htaccess
+    $htaccess = '<FilesMatch "\.(php|phtml|php3|php4|php5|pl|py|jsp|asp|html|htm|shtml|sh|cgi|suspected)$>';
+    $htaccess .= 'deny from all';
+    $htaccess .= '</FilesMatch>';
+
+    $ht_file = fopen("../wp-content/uploads/.htaccess", "w");
+    fwrite($ht_file, $htaccess);
+    fclose($ht_file);
 }
 
 function hide_logout_redirect () {
@@ -119,6 +129,7 @@ add_action('init', function () {
                     break;
                 case "iframe":
                     add_action("send_headers", "prevent_iframe_trap", 10);
+                    // Continue 2 permet de skip jusqu'à la prochaine itération du foreach
                     continue 2;
                 case "bruteforce":
                     add_action("wp_authenticate", "prevent_login_attempts");
@@ -130,6 +141,10 @@ add_action('init', function () {
                 case "version":
                     define('DISALLOW_FILE_EDIT', true);
                     define('DISALLOW_FILE_MODS', true);
+
+                    // if (file_exists("../wp-content/uploads/.htaccess")) {
+                    //     disable_file_execution();
+                    // }
                     continue 2;
                 case "hide":
                     // if we can find wp-login.php
@@ -189,6 +204,7 @@ add_action('init', function () {
                 case "version":
                     define('DISALLOW_FILE_EDIT', false);
                     define('DISALLOW_FILE_MODS', false);
+                    // unlink("../wp-content/uploads/.htaccess");
                     break;
                 case "hide":
                     if (file_exists("../".$new_path)) {
