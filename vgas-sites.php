@@ -36,8 +36,8 @@ function prevent_login_attempts() {
 
     if ($ip && $ip["ip"] === Utils::get_client_ip()) {
         // On vide les données du formulaire pour empêcher une re soumissions de celui-ci
-            unset($_POST['pwd']);
-            unset($_POST['log']);
+        unset($_POST['pwd']);
+        unset($_POST['log']);
 
         wp_die("Trop de tentatives de connexions effectuées, vous êtes bloqués pendant {$duree}");
     }
