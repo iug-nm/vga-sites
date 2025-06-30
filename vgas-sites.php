@@ -7,7 +7,7 @@ Description:  Un plugin personnalisé intégrant plusieurs petites fonctionnalit
 Requires at least: 5.8
 Requires PHP: 7.0
 Version:      1.5.6
-Author:       <a target="_blank" href="mailto:gmanchon@vg-agglo.com">Guilhem Manchon</a> | <a href="./admin.php?page=vga-sites%2Fincludes%2Fvgas-settings.php">Réglages</a>
+Author:       <a target="_blank" href="mailto:gmanchon@vg-agglo.com">Guilhem Manchon</a> | <a href="./admin.php?page=vga-sites%2Fincludes%2Fvgas-main.php">Réglages</a>
 License:      GPL-2.0-or-later
 License URI:  https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  vga
