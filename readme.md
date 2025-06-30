@@ -29,8 +29,8 @@ Ces modules correspondent aux fonctionnalités suivantes :
 # Fonctionnalités de sécurité proposées par l'extension
 L'extension intègre aussi quelques options de sécurité assez utiles que vous pouvez désactiver à tout moment.
 
-- [ ] **Version** : Édition de code depuis le dashboard
+- [x] **Version** : Édition de code depuis le dashboard
 - [x] **Iframe** : Mise en iframe du site par n'importe quels utilisateurs & serveurs
 - [x] **Bruteforce** : Blockage d'une ip utilisateur si celui-ci dépasse le nombre de tentatives max
-- [ ] **Sessions** : Prévient la connexion simultannée sur un même compte utilisateur sur différentes machine
+- [x] **Sessions** : Prévient la connexion simultannée sur un même compte utilisateur sur différentes machine
 - [x] **Hide** : Change l'url de connexion, de déconnexion et de mise à jour du mot de passe, redirige sur la page d'accueil après déconnexion
